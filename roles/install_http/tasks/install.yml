@@ -1,0 +1,36 @@
+---
+- name: Install Apache2
+  include_role:
+    name: install_packages
+  vars:
+    packages:
+      - apache2
+
+- name: Strengthen Apache 
+  ansible.builtin.replace:
+    path: /etc/apache2/apache2.conf
+    regexp: 'Options Indexes FollowSymLinks'
+    replace: 'Options FollowSymLinks'
+
+- name: Strengthen Apache 
+  ansible.builtin.replace:
+    path: /etc/apache2/apache2.conf
+    regexp: 'AllowOverride None'
+    replace: 'AllowOverride All'
+
+- name: Restart apache2 service
+  service:
+    name: apache2
+    enabled: true
+    state: restarted
+
+- name: Enable Apache mods
+  shell: |
+    a2enmod headers
+    a2enmod env
+    a2enmod dir
+    a2enmod mime
+    a2enmod ssl
+    a2enmod rewrite
+    a2enmod proxy_http
+

@@ -1,0 +1,19 @@
+---
+- name: Write out Apache conf for {{ name }}
+  template:
+    src: apache.conf
+    dest: /etc/apache2/sites-available/{{ name }}.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Enable Site for {{ name }}
+  shell: a2ensite {{ name }}.conf
+
+- name: Restart apache2 service
+  service:
+    name: apache2
+    enabled: true
+    state: restarted
+
+
