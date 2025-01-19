@@ -54,10 +54,10 @@
   set_fact:
     mapped_paths: >
       {{ container_mounts
-         | zip(container_mounts
-               | map('regex_replace', '/', '-')
-               | map('regex_replace', '^-', '')
-               | map('regex_replace', '^', '/docker/' + container_name + '/'))
+         | map('regex_replace', '/', '-')
+         | map('regex_replace', '^-', '')
+         | map('regex_replace', '^', '/docker/' + container_name + '/')
+         | zip(container_mounts)
          | map('join', ':') }}
 
 
