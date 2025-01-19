@@ -1,0 +1,29 @@
+---
+- name: Install MariaDB
+  include_role:
+    name: install_packages
+  vars:
+    packages:
+      - mariadb-server
+
+- name: Create Databases.
+  shell: "mysql -u root -e 'CREATE DATABASE IF NOT EXISTS {{ item }}';"
+  loop: "{{ databases }}"
+
+- name: Create Users.
+  shell: >
+    mysql -u root -e "CREATE USER IF NOT EXISTS '{{ item.name }}'@'localhost' IDENTIFIED BY '{{ item.password }}';"
+  loop: "{{ users }}"
+
+
+- name: Set up perms
+  shell: >
+    mysql -u root -e "GRANT ALL ON {{ item.database }}.* to '{{ item.user }}'@'localhost';"
+  loop: "{{ permissions }}"
+
+- name: Ensure MySQL is running
+  service:
+    name: mysqld
+    state: started
+    enabled: yes
+
