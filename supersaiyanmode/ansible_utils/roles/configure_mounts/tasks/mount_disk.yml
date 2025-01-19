@@ -18,4 +18,3 @@
   register: mounts_res
   when: mounts is defined
 
-

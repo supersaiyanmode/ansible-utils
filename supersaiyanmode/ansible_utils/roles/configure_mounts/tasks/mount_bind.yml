@@ -4,7 +4,6 @@
     path: "{{ mount_binds.prefix }}/{{ item | replace('/', '-') | trim('-') }}"
     state: directory
   loop: "{{ mount_binds.paths }}"
-  when: mount_binds is defined
 
 - name: "Mount {{ item }}"
   ansible.posix.mount:
@@ -15,6 +14,5 @@
     state: mounted
   loop: "{{ mount_binds.paths }}"
   register: mount_binds_res
-  when: mount_binds is defined
 
 
