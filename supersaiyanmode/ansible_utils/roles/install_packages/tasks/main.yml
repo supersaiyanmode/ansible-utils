@@ -1,0 +1,5 @@
+---
+- name: Forward to OS specific package manager
+  include_tasks:
+    file: "{{ ansible_os_family }}.yml"
+

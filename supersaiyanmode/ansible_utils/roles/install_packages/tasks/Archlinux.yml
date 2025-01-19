@@ -1,0 +1,11 @@
+---
+- name: Update Pacman cache
+  pacman:
+      update_cache: yes
+
+- name: Clear Pacman cache.
+  shell: "yes y | pacman -Scc"
+  when: (clear_cache is defined) and clear_cache and ansible_os_family == "Archlinux"
+
+
+
