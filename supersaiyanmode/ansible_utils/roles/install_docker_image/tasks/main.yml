@@ -77,4 +77,4 @@
   vars:
     name: "{{ container_name }}"
     port: "{{ main_port }}"
-    host: "{{ MAIN_HOST_NAME }}"
+    host: "{{ lookup('env', 'MAIN_HOST_NAME') }}"
