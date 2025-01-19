@@ -45,3 +45,36 @@
     state: started
     enabled: yes
 
+- name: Create storage location
+  file:
+    path: /docker/{{container_name}}
+    state: directory
+
+- name: Join folders
+  set_fact:
+    mapped_paths: >
+      {{ container_mounts
+         | zip(container_mounts
+               | map('regex_replace', '/', '-')
+               | map('regex_replace', '^-', '')
+               | map('regex_replace', '^', '/docker/' + container_name + '/'))
+         | map('join', ':') }}
+
+
+- name: "Ensure {{ container_name }} container is running"
+  docker_container:
+    name: "{{ container_name }}"
+    image: "{{ container_image }}"
+    restart_policy: unless-stopped
+    ports: "{{ container_ports }}"
+    volumes: "{{ mapped_paths }}"
+    env: "{{ env }}"
+
+- name: "Enable reverse proxy for {{ container_name }}"
+  include_role:
+    name: install_http
+    tasks_from: install_reverse_proxy
+  vars:
+    name: "{{ container_name }}"
+    port: "{{ main_port }}"
+    host: "{{ MAIN_HOST_NAME }}"
