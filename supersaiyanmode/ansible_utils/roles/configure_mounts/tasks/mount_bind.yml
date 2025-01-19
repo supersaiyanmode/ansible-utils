@@ -15,4 +15,3 @@
   loop: "{{ mount_binds.paths }}"
   register: mount_binds_res
 
-
