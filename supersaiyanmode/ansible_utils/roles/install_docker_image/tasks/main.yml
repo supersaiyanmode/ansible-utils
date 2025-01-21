@@ -66,9 +66,10 @@
     name: "{{ container_name }}"
     image: "{{ container_image }}"
     restart_policy: unless-stopped
-    ports: "{{ container_ports }}"
-    volumes: "{{ mapped_paths }}"
+    ports: "{{ container_ports | default([]) }}"
+    volumes: "{{ mapped_paths | default([]) }}"
     env: "{{ env }}"
+    network_mode: "{{ network_mode | default('host') }}"
 
 - name: "Enable reverse proxy for {{ container_name }}"
   include_role:
