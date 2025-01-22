@@ -71,6 +71,13 @@
     env: "{{ env }}"
     network_mode: "{{ network_mode | default('host') }}"
 
+- name: "Setup {{ container_name }}"
+  community.docker.docker_container_exec:
+    container: "{{ container_name }}"
+    command: "{{ item }}"
+    user: root
+  loop: "{{ setup_commands }}"
+
 - name: "Enable reverse proxy for {{ container_name }}"
   include_role:
     name: install_http
