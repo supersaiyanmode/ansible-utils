@@ -75,6 +75,7 @@
     env: "{{ env }}"
     user: "{{ getent_passwd[user].1 | default(omit) }}"
     network_mode: "{{ network_mode | default('host') }}"
+    capabilities: "{{ capabilities | default(omit) }}"
 
 - name: "Setup {{ container_name }}"
   community.docker.docker_container_exec:
