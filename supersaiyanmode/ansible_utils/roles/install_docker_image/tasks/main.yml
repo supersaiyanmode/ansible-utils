@@ -60,6 +60,10 @@
          | zip(container_mounts)
          | map('join', ':') }}
 
+- name: Get UIDs of users
+  getent:
+    database: passwd
+  when: user is defined
 
 - name: "Ensure {{ container_name }} container is running"
   docker_container:
@@ -69,6 +73,7 @@
     ports: "{{ container_ports | default([]) }}"
     volumes: "{{ mapped_paths | default([]) }}"
     env: "{{ env }}"
+    user: "{{ getent_passwd[user].1 | default(omit) }}"
     network_mode: "{{ network_mode | default('host') }}"
 
 - name: "Setup {{ container_name }}"
