@@ -6,13 +6,13 @@
     packages:
       - apache2
 
-- name: Strengthen Apache 
+- name: Strengthen Apache
   ansible.builtin.replace:
     path: /etc/apache2/apache2.conf
     regexp: 'Options Indexes FollowSymLinks'
     replace: 'Options FollowSymLinks'
 
-- name: Strengthen Apache 
+- name: Strengthen Apache
   ansible.builtin.replace:
     path: /etc/apache2/apache2.conf
     regexp: 'AllowOverride None'
