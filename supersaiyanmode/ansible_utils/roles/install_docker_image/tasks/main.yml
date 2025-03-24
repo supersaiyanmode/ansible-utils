@@ -95,4 +95,5 @@
     name: "{{ container_name }}"
     port: "{{ main_port }}"
     host: "{{ lookup('env', 'MAIN_HOST_NAME') }}"
+    enable_ws: true
   when: main_port is defined
