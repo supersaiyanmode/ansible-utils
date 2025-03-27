@@ -65,6 +65,13 @@
     database: passwd
   when: user is defined
 
+- name: "Login into {{ container_registry.host }}"
+  docker_login:
+    registry: "{{ container_registry.host }}"
+    username: "{{ container_registry.username }}"
+    password: "{{ lookup('env', container_registry.password_env_key) }}"
+  when: container_registry is defined
+
 - name: "Ensure {{ container_name }} container is running"
   docker_container:
     name: "{{ container_name }}"
