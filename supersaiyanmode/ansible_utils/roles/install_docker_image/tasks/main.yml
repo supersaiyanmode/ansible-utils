@@ -77,14 +77,13 @@
     name: "{{ container_name }}"
     image: "{{ container_image }}"
     restart_policy: unless-stopped
-    ports: "{{ container_ports | default([]) }}"
+    ports: "{{ container_ports }}"
     volumes: "{{ mapped_paths + custom_mounts }}"
     env: "{{ env }}"
     user: "{{ getent_passwd[user].1 | default(omit) }}"
     network_mode: "{{ network_mode | default('host') }}"
     capabilities: "{{ capabilities | default(omit) }}"
   vars:
-    custom_mounts: "{{ custom_mounts | default([]) }}"
 
 - name: "Setup {{ container_name }}"
   community.docker.docker_container_exec:
