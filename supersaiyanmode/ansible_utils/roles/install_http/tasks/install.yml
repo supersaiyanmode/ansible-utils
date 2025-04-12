@@ -6,6 +6,12 @@
     packages:
       - apache2
 
+- name: Create /etc/apache2/sites-available
+  ansible.builtin.file:
+    path: /etc/apache2/sites-available
+    state: directory
+    mode: '0755'
+
 - name: Strengthen Apache
   ansible.builtin.replace:
     path: /etc/apache2/apache2.conf
