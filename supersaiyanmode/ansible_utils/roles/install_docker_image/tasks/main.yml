@@ -81,7 +81,7 @@
     volumes: "{{ mapped_paths + custom_mounts }}"
     env: "{{ env }}"
     user: "{{ getent_passwd[user].1 | default(omit) }}"
-    network_mode: "{{ network_mode | default('host') }}"
+    network_mode: "{{ network_mode }}"
     capabilities: "{{ capabilities | default(omit) }}"
   vars:
 
