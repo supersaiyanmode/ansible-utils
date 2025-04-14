@@ -6,6 +6,14 @@
     packages:
       - mariadb-server
 
+- name: Patch config files
+  template:
+    src: 99-bind.cnf
+    dest: /etc/mysql/mariadb.conf.d/99.bind.cnf
+    owner: root
+    group: root
+    mode: '0644'
+
 - name: Create Databases.
   shell: "mysql -u root -e 'CREATE DATABASE IF NOT EXISTS {{ item }};'"
   loop: "{{ databases }}"
@@ -24,6 +32,6 @@
 - name: Ensure MySQL is running
   service:
     name: mysqld
-    state: started
+    state: restarted
     enabled: yes
 
