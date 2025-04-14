@@ -88,8 +88,8 @@
 - name: "Setup {{ container_name }}"
   community.docker.docker_container_exec:
     container: "{{ container_name }}"
-    command: "{{ item }}"
-    user: root
+    command: "{{ item.cmd }}"
+    user: "{{ item.user | default('root') }}"
   loop: "{{ setup_commands }}"
   when: setup_commands is defined
 
