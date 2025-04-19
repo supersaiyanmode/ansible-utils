@@ -89,6 +89,7 @@
     user: "{{ getent_passwd[user].1 | default(omit) }}"
     network_mode: "{{ network_mode }}"
     capabilities: "{{ capabilities | default(omit) }}"
+    init: "{{ init | default(omit) }}"
   vars:
 
 - name: "Setup {{ container_name }}"
