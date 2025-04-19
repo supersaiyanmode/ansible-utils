@@ -72,6 +72,12 @@
     password: "{{ lookup('env', container_registry.password_env_key) }}"
   when: container_registry is defined
 
+- name: Pull the latest image
+  docker_image:
+    name: "{{ container_image }}"
+    source: pull
+  when: image_pull is defined and image_pull
+
 - name: "Ensure {{ container_name }} container is running"
   docker_container:
     name: "{{ container_name }}"
