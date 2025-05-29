@@ -95,7 +95,7 @@
     volumes: "{{ mapped_paths + custom_mounts }}"
     env: "{{ env }}"
     user: "{{ getent_passwd[user].1 | default(omit) }}"
-    devices: "{{ (find_result.files | map(attribute='path') | list) if find_result is defined else omit }}"
+    devices: "{{ (find_result.files | map(attribute='path') | list) if devices is defined and find_result is defined else omit }}"
     network_mode: "{{ network_mode }}"
     capabilities: "{{ capabilities | default(omit) }}"
     init: "{{ init | default(omit) }}"
