@@ -120,4 +120,4 @@
     port: "{{ main_port }}"
     host: "{{ lookup('env', 'MAIN_HOST_NAME') }}"
     enable_ws: true
-  when: main_port is defined
+  when: "main_port is defined and main_port is match('^\\d+$')"
