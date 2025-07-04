@@ -1,0 +1,30 @@
+---
+- name: "Construct udev rule conditions string"
+  ansible.builtin.set_fact:
+    udev_rule_line: >-
+      {% set parts = [] %}
+      {% for item in conditions %}
+        {% set _ = parts.append(item.key ~ '==' ~ item.value | to_json) %}
+      {% endfor %}
+      {% for item in actions %}
+        {% set _ = parts.append(item.key ~ '=' ~ item.value | to_json) %}
+      {% endfor %}
+      {{ parts | join(', ') | trim }}
+
+- name: "Write out the rule: {{ rule_name }}."
+  ansible.builtin.lineinfile:
+    path: "/etc/udev/rules.d/50-{{ rule_name }}.rules"
+    line: "{{ udev_rule_line | trim }}"
+    create: yes
+    owner: root
+    group: root
+    mode: '0644'
+    state: present
+
+- name: "Reload udev rules"
+  ansible.builtin.command: udevadm control --reload-rules
+  changed_when: true
+
+- name: "Trigger udev"
+  ansible.builtin.command: udevadm trigger
+
