@@ -5,6 +5,7 @@
     shell: /bin/bash
     state: present
     createhome: "{{ createhome | default('no') }}"
+    uid: "{{ uid | default(omit) }}"
     home: "{{ home_dir_prefix | default('/home') }}/{{username}}"
   register: cur_user
 
