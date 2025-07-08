@@ -50,6 +50,14 @@
     path: /docker/{{container_name}}
     state: directory
 
+- name: Construct mapped folders.
+  set_fact:
+    target_paths: >
+      {{ container_mounts
+         | map('regex_replace', '/', '-')
+         | map('regex_replace', '^-', '')
+         | map('regex_replace', '^', '/docker/' + container_name + '/') }}
+
 - name: Join folders
   set_fact:
     mapped_paths: >
@@ -72,6 +80,14 @@
   getent:
     database: passwd
   when: user is defined
+
+- name: Setup permissions for custom user
+  file:
+    path: "{{ item }}"
+    owner: "{{ running_user }}"
+    recurse: yes
+  loop: "{{ target_paths }}"
+  when: running_user is defined
 
 - name: "Login into {{ container_registry.host }}"
   docker_login:
