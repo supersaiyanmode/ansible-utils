@@ -76,18 +76,13 @@
   register: find_result
   when: devices is defined
 
-- name: Get UIDs of users
-  getent:
-    database: passwd
-  when: user is defined
-
 - name: Setup permissions for custom user
   file:
     path: "{{ item }}"
-    owner: "{{ running_user }}"
+    owner: "{{ user }}"
     recurse: yes
   loop: "{{ target_paths }}"
-  when: running_user is defined
+  when: user is defined
 
 - name: "Login into {{ container_registry.host }}"
   docker_login:
@@ -112,7 +107,8 @@
     ports: "{{ container_ports }}"
     volumes: "{{ mapped_paths + custom_mounts }}"
     env: "{{ env }}"
-    user: "{{ getent_passwd[user].1 | default(omit) }}"
+    user: "{{ user | default(omit) }}"
+    groups: "{{ user_groups | default(omit) }}"
     devices: "{{ (find_result.files | map(attribute='path') | list) if devices is defined and find_result is defined else omit }}"
     network_mode: "{{ network_mode }}"
     capabilities: "{{ capabilities | default(omit) }}"
