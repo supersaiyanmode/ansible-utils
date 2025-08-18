@@ -3,5 +3,6 @@ container_mounts: []
 custom_mounts: []
 container_ports: []
 network_mode: host
+restart_policy: unless-stopped
 find_result:
   files: []

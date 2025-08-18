@@ -108,7 +108,7 @@
   docker_container:
     name: "{{ container_name }}"
     image: "{{ container_image }}"
-    restart_policy: unless-stopped
+    restart_policy: "{{ restart_policy }}"
     ports: "{{ container_ports }}"
     volumes: "{{ mapped_paths + custom_mounts }}"
     env: "{{ env }}"
